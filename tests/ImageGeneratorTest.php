@@ -4,6 +4,7 @@ namespace WikiGods\ImageGenerator\Tests;
 
 use InvalidArgumentException;
 use Orchestra\Testbench\TestCase;
+use WikiGods\ImageGenerator\FakerImageGeneratorServiceProvider;
 use WikiGods\ImageGenerator\ImageGenerator;
 
 class ImageGeneratorTest extends TestCase
@@ -105,5 +106,34 @@ class ImageGeneratorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         ImageGenerator::image('/root/invalid_dir_xyz');
+    }
+
+    /** @test */
+    public function it_can_be_used_as_a_faker_provider()
+    {
+        $faker = \Faker\Factory::create();
+
+        $faker->addProvider(new FakerImageGeneratorServiceProvider($faker));
+
+        $text = 'Faker Integration';
+
+        if (!file_exists($this->fontPath)) {
+            $this->markTestSkipped('Fuente no encontrada para prueba de Faker.');
+        }
+
+        $imagePath = $faker->image(
+            $this->testDir,
+            $text,
+            $this->fontPath,
+            300,
+            150
+        );
+
+        $this->assertFileExists($imagePath);
+
+        $imageInfo = getimagesize($imagePath);
+        $this->assertEquals(300, $imageInfo[0]);
+        $this->assertEquals(150, $imageInfo[1]);
+        $this->assertStringContainsString($this->testDir, $imagePath);
     }
 }
