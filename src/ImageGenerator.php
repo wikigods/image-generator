@@ -19,7 +19,7 @@ class ImageGenerator
     {
 
         $fontSize = 50;
-        
+
         $im = imagecreatetruecolor($width, $height);
 
 
@@ -61,9 +61,9 @@ class ImageGenerator
         $filePath = $dir . DIRECTORY_SEPARATOR . $fileName;
 
         if ($format == 'png') {
-            imagepng($im, $fullPath);
+            imagepng($im, $filePath);
         } elseif ($format == 'jpg') {
-            imagejpeg($im, $fullPath);
+            imagejpeg($im, $filePath);
         }
 
         imagedestroy($im);

@@ -27,6 +27,11 @@
       "src/helpers.php"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "WikiGods\\ImageGenerator\\Tests\\": "tests/"
+    }
+  },
   "extra": {
     "laravel": {
       "providers": [

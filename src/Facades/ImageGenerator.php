@@ -5,7 +5,7 @@ namespace WikiGods\ImageGenerator\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static string generate(int $width = 600, int $height = 480, string $extension = 'png', string $text = null, string $fontPath = null, int $fontSize = null)
+ * @method static string image($dir, $text = null, $fontPath = null, $width = 640, $height = 480, $fullPath = true, $format = 'png')
  * * @see \WikiGods\ImageGenerator\ImageGenerator
  */
 class ImageGenerator extends Facade
