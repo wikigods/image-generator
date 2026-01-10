@@ -20,9 +20,7 @@ class ImageGeneratorServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('image-generator', function ($app) {
-            return new ImageGenerator(
-
-            );
+            return new ImageGenerator();
         });
     }
 }

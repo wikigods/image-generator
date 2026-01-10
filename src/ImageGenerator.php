@@ -8,7 +8,7 @@ class ImageGenerator
      * Generates an image with a random background color and optional multi-line text.
      */
     public static function image(
-        $dir,
+        $dir = null,
         $text = null,
         $fontPath = null,
         $width = 640,
