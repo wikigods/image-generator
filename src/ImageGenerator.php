@@ -56,7 +56,7 @@ class ImageGenerator
             throw new \InvalidArgumentException(sprintf('Cannot write to directory "%s"', $dir));
         }
 
-        $name = md5(uniqid(mt_rand(), true)) . '.' . $format;
+        $name = md5(uniqid(mt_rand(), true));
         $fileName = sprintf('%s.%s', $name, $format);
         $filePath = $dir . DIRECTORY_SEPARATOR . $fileName;
 
