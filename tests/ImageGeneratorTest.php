@@ -4,8 +4,8 @@ namespace WikiGods\ImageGenerator\Tests;
 
 use InvalidArgumentException;
 use Orchestra\Testbench\TestCase;
-use WikiGods\ImageGenerator\FakerImageGeneratorServiceProvider;
 use WikiGods\ImageGenerator\ImageGenerator;
+use WikiGods\ImageGenerator\ImageGeneratorServiceProvider;
 
 class ImageGeneratorTest extends TestCase
 {
@@ -35,6 +35,11 @@ class ImageGeneratorTest extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [ImageGeneratorServiceProvider::class];
     }
 
     /** @test */
@@ -111,9 +116,7 @@ class ImageGeneratorTest extends TestCase
     /** @test */
     public function it_can_be_used_as_a_faker_provider()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new FakerImageGeneratorServiceProvider($faker));
+        $faker = $this->app->make(\Faker\Generator::class);
 
         $text = 'Faker Integration';
 
@@ -135,5 +138,20 @@ class ImageGeneratorTest extends TestCase
         $this->assertEquals(300, $imageInfo[0]);
         $this->assertEquals(150, $imageInfo[1]);
         $this->assertStringContainsString($this->testDir, $imagePath);
+    }
+
+    /** @test */
+    public function it_replaces_fake_image_automatically_when_package_is_loaded()
+    {
+        $faker = $this->app->make(\Faker\Generator::class);
+
+        $imagePath = $faker->image($this->testDir, null, null, 180, 90, true, 'png');
+
+        $this->assertFileExists($imagePath);
+
+        $imageInfo = getimagesize($imagePath);
+        $this->assertEquals(180, $imageInfo[0]);
+        $this->assertEquals(90, $imageInfo[1]);
+        $this->assertEquals('image/png', $imageInfo['mime']);
     }
 }
