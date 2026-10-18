@@ -34,35 +34,39 @@ $path = ImageGenerator::image(
 );
 ```
 
-### 2) Uso con Faker (automatico)
+### 2) Uso con Faker (automático)
 
-Después de instalar el paquete, puedes usar:
+Laravel registra el provider del paquete mediante Composer autodiscovery. Al resolver Faker, el paquete agrega su provider automáticamente; no necesitas llamar `addProvider(...)`.
+
+La firma mantiene primero los argumentos habituales de Faker (`dir`, `width`, `height`, `fullPath`, `aImageType`, `thumbsDir`). Para generar una imagen con texto, agrega `text` y `fontPath` al final:
 
 ```php
 $path = fake()->image(
     storage_path('app/public/images'),
-    'Seeder Image',
-    resource_path('fonts/Nunito-Regular.ttf'),
     300,
     200,
     true,
-    'jpg'
+    'jpg',
+    null,
+    'Seeder Image',
+    resource_path('fonts/Nunito-Regular.ttf')
 );
 ```
 
-No necesitas llamar `addProvider(...)` manualmente.
+`thumbsDir` se acepta para mantener compatibilidad con la firma de Faker; este paquete genera la imagen localmente y no lo utiliza.
 
 ## Firma del metodo
 
 ```php
 image(
     $dir = null,
-    $text = null,
-    $fontPath = null,
     $width = 640,
     $height = 480,
     $fullPath = true,
-    $format = 'png'
+    $aImageType = null,
+    $thumbsDir = null,
+    $text = null,
+    $fontPath = null
 )
 ```
 
@@ -74,7 +78,9 @@ image(
 - `$width`: Ancho de imagen.
 - `$height`: Alto de imagen.
 - `$fullPath`: Si es `true`, retorna ruta completa; si es `false`, solo nombre del archivo.
-- `$format`: `png` o `jpg`.
+- `$aImageType`: formato de salida (`png` o `jpg`); si es `null`, usa `png`.
+- `$thumbsDir`: argumento compatible con Faker; no se utiliza porque las imágenes se generan localmente.
+- `$text` y `$fontPath`: opciones adicionales del paquete para dibujar texto usando una fuente `.ttf`.
 
 ## Requisitos
 
