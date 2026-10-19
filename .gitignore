@@ -1,5 +1,6 @@
 /.phpunit.cache
 /vendor
+/tests/generated_images/
 /.fleet
 /.idea
 /.vscode

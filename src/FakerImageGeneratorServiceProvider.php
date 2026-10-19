@@ -20,7 +20,10 @@ class FakerImageGeneratorServiceProvider extends Base
         $aImageType = null,
         $thumbsDir = null,
         $text = null,
-        $fontPath = null
+        $fontPath = null,
+        $category = 'random',
+        $variant = null,
+        $name = null
     ) {
         // Keep accepting the package's previous positional signature:
         // image($dir, $text, $fontPath, $width, $height, $fullPath, $format).
@@ -40,6 +43,10 @@ class FakerImageGeneratorServiceProvider extends Base
             $fontPath = $legacyFontPath;
         }
 
+        if (null !== $name && '' !== $name) {
+            $text = $name;
+        }
+
         // Faker calls this argument aImageType; this generator supports png/jpg.
         $format = null === $aImageType ? 'png' : $aImageType;
         if ('jpeg' === strtolower($format)) {
@@ -53,7 +60,27 @@ class FakerImageGeneratorServiceProvider extends Base
             $width,
             $height,
             $fullPath,
-            $format
+            $format,
+            $category,
+            $variant
         );
+    }
+
+    /**
+     * Generate a Faker-style image for a specific category and optional variant.
+     *
+     * Example: fake()->categoryImage('computer', $dir, 640, 480, true, 'png', 'ram').
+     */
+    public function categoryImage($category, $dir = null, $width = 640, $height = 480, $fullPath = true, $aImageType = null, $variant = null, $name = null, $fontPath = null)
+    {
+        return $this->image($dir, $width, $height, $fullPath, $aImageType, null, $name, $fontPath, $category, $variant);
+    }
+
+    /**
+     * Generate an image for a random computer component or the requested variant.
+     */
+    public function computerImage($variant = null, $dir = null, $width = 640, $height = 480, $fullPath = true, $aImageType = null, $name = null, $fontPath = null)
+    {
+        return $this->image($dir, $width, $height, $fullPath, $aImageType, null, $name, $fontPath, 'computer', $variant);
     }
 }
